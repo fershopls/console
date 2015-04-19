@@ -10,11 +10,13 @@ class OutputManager {
 
     public function puts ($message = null, $class = "default")
     {
+        // Array json pretty print support
+        $message = is_array($message)?json_encode($message):$message;
+        // Explode by lines & process each
         $message = ($message)?explode ("\n", $message):[];
 
         foreach ($message as $line)
         {
-            $line = is_array($line)?json_encode($line):$line;
             // Execute Filters
             $line = $this->get ($line, $class);
             // Print Message
