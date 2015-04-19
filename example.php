@@ -18,6 +18,14 @@ $output->middleware (function ($message = "")
     return "[".date("H:i:s")."] " . $message;
 });
 
+$output->dd([1,3,2,4,2], false);
+$output->dd(false, false);
+$output->dd(NULL, false);
+$output->dd(1203, false);
+$output->dd("HOla", false);
+$output->dd(true, false);
+
+exit;
 
 $output->puts("Hello there!");
 $output->puts("What's your name?");

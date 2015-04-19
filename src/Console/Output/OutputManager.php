@@ -10,15 +10,19 @@ class OutputManager {
 
     public function puts ($message = null, $class = "default")
     {
-        if ($message)
+        $message = ($message)?explode ("\n", $message):[];
+
+        foreach ($message as $line)
         {
+            $line = is_array($line)?json_encode($line):$line;
             // Execute Filters
-            $message = $this->get ($message, $class);
+            $line = $this->get ($line, $class);
             // Print Message
-            echo $message;
+            echo $line . PHP_EOL;
         }
+
         // Support Windows/Linux/MacOs for new line character
-        if ($class) echo PHP_EOL;
+        //if ($class) echo PHP_EOL;
         // Always return processed string
         return $message;
     }
@@ -34,6 +38,24 @@ class OutputManager {
                 ]
             );
         }
+    }
+
+    public function dd ($variable = null, $end = true)
+    {
+        if (is_array($variable)):
+            $variable = json_encode($variable);
+        elseif (is_null($variable)):
+            $variable = "NULL :(";
+        elseif ($variable === false):
+            $variable = "False";
+        else:
+            ob_start();
+            var_dump($variable);
+            $variable = trim(ob_get_clean());
+        endif;
+
+        $this->puts($variable);
+        if ($end) exit;
     }
 
     protected function get ($message, $class)
